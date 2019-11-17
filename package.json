@@ -15,7 +15,8 @@
     "redux": "^4.0.0"
   },
   "scripts": {
-    "start": "npm-run-all -p watch-css start-js",
+    "start":"node server.js",
+    "dev": "npm-run-all -p watch-css start-js",
     "build": "npm-run-all build-css build-js",
     "start-js": "react-scripts start",
     "build-js": "react-scripts build",
