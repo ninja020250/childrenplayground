@@ -46,5 +46,6 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-promise-middleware": "^5.1.1",
     "redux-thunk": "^2.3.0"
-  }
+  },
+  "homepage": "https://childrenplayground001.herokuapp.com/"
 }

@@ -22,6 +22,7 @@ app.use(cors());
 // app.use(express.static(__dirname + "/ITRECRUIT_WEB"));
 // Parse JSON bodies (as sent by API clients)
 
+app.use(express.static(__dirname + "/build"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/build/index.html");
 });
@@ -29,7 +30,6 @@ app.get("/*", (req, res) => {
   res.sendFile(__dirname + "/build/index.html");
 });
 
-app.use(express.static(__dirname + "/build"));
 // app.use(express.static(__dirname + "/mailSubcribe.txt"));
 // app.use(function(req, res, next) {
 //   if (!req.path.includes("api") && !req.path.includes("assets")) {
