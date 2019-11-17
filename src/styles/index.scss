@@ -1,0 +1,63 @@
+@import "./login.scss";
+@import "./homePage.scss";
+@import "./table.scss";
+@import "./loading.scss";
+.centering {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.content-wrapper {
+  background: #ffffff;
+  padding: 20px 20px;
+  border-radius: 5px;
+}
+.opt {
+  padding: 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  list-style-type: none;
+}
+.mr-2 {
+  margin-right: 2rem;
+}
+
+.modal-zoomImage {
+  width: 700px !important;
+  .ant-modal-body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ant-btn-primary{
+    display: none;
+  }
+}
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ant-menu{
+  .custom-menu-item{
+   padding: 0 0 ;
+   .ant-menu-item-selected{
+     color: #ffffff !important;
+   }
+    a{
+      padding: 0 .7rem !important;
+      
+    }
+  }
+}
+.right-header{
+  background: #001529;
+  line-height: 64px;
+  color: #ffffff;
+}
+
+.dl{
+  display: flex;
+}
