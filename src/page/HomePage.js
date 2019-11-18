@@ -45,16 +45,19 @@ class HomePage extends Component {
             >
               <Switch>
                 <Route
+                  key="route-1"
                   path={`${this.props.match.path}/`}
                   exact
                   component={ImageList}
                 />
                 <Route
+                  key="route-2"
                   path={`${this.props.match.path}/images`}
                   exact
                   component={ImageList}
                 />
                 <Route
+                  key="route-3"
                   path={`${this.props.match.path}/stream`}
                   component={Stream}
                 />
@@ -71,7 +74,11 @@ export class HeaderMenu extends React.Component {
   render() {
     return (
       <div className="dl">
-        <Menu theme="dark" mode="horizontal" style={{ lineHeight: "64px" , width:"70%"}}>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          style={{ lineHeight: "64px", width: "70%" }}
+        >
           <Menu.Item style={{ padding: "0" }}>
             <div
               className=" flex-center"
@@ -88,26 +95,30 @@ export class HeaderMenu extends React.Component {
               />
             </div>
           </Menu.Item>
-          <li className="ant-menu-item  custom-menu-item">
-          <NavLink
-            exact
-            activeClassName="ant-menu-item-active ant-menu-item-selected"
-            to="/home/stream/"
-          >
-            Quan Sát Video
-          </NavLink>
-        </li>
-        <li className="ant-menu-item  custom-menu-item">
-          <NavLink
-            exact
-            activeClassName="ant-menu-item-active ant-menu-item-selected "
-            to="/home/images"
-          >
-            Danh Sách Ảnh
-          </NavLink>
-        </li>
+          <li key="header-menu-1" className="ant-menu-item  custom-menu-item">
+            <NavLink
+              exact
+              activeClassName="ant-menu-item-active ant-menu-item-selected"
+              to="/home/stream/"
+            >
+              Quan Sát Video
+            </NavLink>
+          </li>
+          <li key="header-menu-2" className="ant-menu-item  custom-menu-item">
+            <NavLink
+              exact
+              activeClassName="ant-menu-item-active ant-menu-item-selected "
+              to="/home/images"
+            >
+              Danh Sách Ảnh
+            </NavLink>
+          </li>
         </Menu>
-        <div className="right-header" style={{width:"30%"}}> <Tag color="blue"><strong>Hệ Thống Quan Sát Khu Vui Chơi Trẻ Em</strong></Tag></div>
+        <div className="right-header" style={{ width: "30%" }}>
+          <Tag color="blue">
+            <strong>Hệ Thống Quan Sát Khu Vui Chơi Trẻ Em</strong>
+          </Tag>
+        </div>
       </div>
     );
   }

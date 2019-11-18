@@ -14,7 +14,7 @@ import { httpService } from "../../common/httpService";
 export const updateImages = (
   fromDate,
   toDate,
-  pagination = 1,
+  pagination ,
   callbackSuccess = undefined,
   callbackFail = undefined
 ) => {

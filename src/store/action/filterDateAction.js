@@ -9,3 +9,13 @@ export const updateFiltersDate = (from, to) => dispatch => {
     }
   });
 };
+
+export const resetFiltersDate = () => dispatch => {
+  dispatch({
+    type: UPDATE_FILTER_DATE,
+    payload: {
+      from: undefined,
+      to: undefined
+    }
+  });
+};
