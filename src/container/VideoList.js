@@ -1,6 +1,7 @@
 import {
   Button,
   DatePicker,
+  Icon,
   Input,
   InputNumber,
   Modal,
@@ -275,7 +276,7 @@ export class VideoTable extends Component {
             </td>
             <td/>
             <td>{row.updatedTime}</td> 
-            <td><Button>Xem Lại Video</Button></td> 
+            <td><Button type="primary"><Icon type="play-square" /> Xem Lại Video</Button></td> 
             {/* <td>
               <img
                 style={{ cursor: "pointer" }}
