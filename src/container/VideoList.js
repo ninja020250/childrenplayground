@@ -22,6 +22,7 @@ import {
 import { LineLoading } from "../common/LineLoading";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { toStringDate } from "../common/utilities";
 import { updatePagination } from "../store/action/pagiAction";
 import { updateVideos } from "../store/action/videoAction";
 
@@ -251,16 +252,20 @@ export const VideoListOption = props => {
   };
 export class VideoTable extends Component {
     state = { visible: false, currentPage: 1, row: {} };
+    goVideoDetail = (id)=>{
+      this.props.history.push(`${this.props.match.url}/${id}`)
+    }
     getRows = () => {
         
       return this.props.videos.map((row, index) => {
-        // var AgePredicted = row.AgePredictions.map((age, index) => {
+        // var agePredicted = row.agePredictions.map((age, index) => {
         //   return (
         //     <div key={`${index}-age-${row.videoId}`}>
         //       {age.age}:<Tag color="red">{age.levelWarning.levelWarningName}</Tag>
         //     </div>
         //   );
         // });
+        var time =  toStringDate(row.createdTime);
         return (
           <tr key={`${index}-videoList-${row.videoId}`}>
             <td>{row.videoId}</td>
@@ -275,8 +280,9 @@ export class VideoTable extends Component {
               />
             </td>
             <td/>
-            <td>{row.updatedTime}</td> 
-            <td><Button type="primary"><Icon type="play-square" /> Xem Lại Video</Button></td> 
+            <td>{time}</td> 
+            <td><Button type="primary" 
+            onClick={()=>this.goVideoDetail(row.videoId)}><Icon type="play-square" /> Xem Lại Video</Button></td> 
             {/* <td>
               <img
                 style={{ cursor: "pointer" }}
@@ -287,7 +293,7 @@ export class VideoTable extends Component {
                 }}
               />
             </td>
-            <td>{AgePredicted}</td>
+            <td>{agePredicted}</td>
             <td>{row.updatedTime}</td> */}
           </tr>
         );
@@ -338,7 +344,7 @@ export class VideoTable extends Component {
                   <div>Tuổi phát hiện</div>
                 </th>
                 <th>
-                  <div>Ngày Phát Hiện</div>
+                  <div>Ngày Lưu Video</div>
                 </th>
                 <th>
                   <div>Tùy Chọn</div>

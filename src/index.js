@@ -1,12 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
 import "antd/dist/antd.css";
 import "./styles/index.scss";
-import { Provider } from "react-redux";
-import { BrowserRouter as Router, Route , Switch} from "react-router-dom";
 
+import * as serviceWorker from "./serviceWorker";
+
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+
+import App from "./App";
+import { Provider } from "react-redux";
+import React from "react";
+import ReactDOM from "react-dom";
 import store from "./store/store";
 
 ReactDOM.render(

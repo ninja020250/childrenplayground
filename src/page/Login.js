@@ -23,7 +23,10 @@ class Login extends Component {
             </div>
           </Col>
           <Col span={8} className=" login-form-container">
-            <WrappedNormalLoginForm initUser={this.props.initUser} {...this.props}/>
+            <WrappedNormalLoginForm
+              initUser={this.props.initUser}
+              {...this.props}
+            />
           </Col>
         </Row>
       </div>
@@ -37,29 +40,40 @@ export class NormalLoginForm extends React.Component {
     this.state = {
       username: "",
       password: "",
-      isRemember: false,
+      isRemember: false
     };
   }
   handleSubmit = e => {
     e.preventDefault();
+    this.setState({
+      loading: true
+    });
     const { username, password, isRemember } = this.state;
     this.props.form.validateFields((err, values) => {
       var data = {
         username: username,
         password: password,
-        isRemember: isRemember,
+        isRemember: isRemember
       };
       this.props.initUser(
         data,
         () => {
-          this.props.history.push("/home")
+          this.setState({
+            loading: false
+          });
+          this.props.history.push("/home");
         },
         () => {
+          this.setState({
+            loading: false
+          });
           alert("invalid Username or password");
         }
       );
     });
-
+    this.setState({
+      loading: false
+    });
     // e.preventDefault();
     // this.props.form.validateFields((err, values) => {
     //   if (!err) {
@@ -76,16 +90,16 @@ export class NormalLoginForm extends React.Component {
     });
   };
 
-  handleCheckbox = e =>{
+  handleCheckbox = e => {
     var value = e.target.checked;
     var name = e.target.name;
     this.setState({
       [name]: value
     });
-  }
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
-    const {isRemember} = this.state;
+    const { isRemember, loading } = this.state;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form ">
         <h1 style={{ textAlign: "center" }}>HỆ THỐNG QUẢN LÝ CAMERA</h1>
@@ -121,11 +135,12 @@ export class NormalLoginForm extends React.Component {
           })(<Checkbox name="isRemember" onChange={this.handleCheckbox}></Checkbox>)}
           */}
           <Button
+            loading={loading && true}
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-            Đăng Nhập
+            {loading ? "Đợi chút" : "Đăng Nhập"}
           </Button>
         </Form.Item>
       </Form>
@@ -134,7 +149,7 @@ export class NormalLoginForm extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return{};
+  return {};
 };
 
 let mapDispatchToProps = dispatch => {

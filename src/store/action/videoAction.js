@@ -1,36 +1,39 @@
 import {
-    FETCH_USER,
-    FETCH_VIDEO,
-    INIT_USER,
-    UPDATE_USER,
-    UPDATE_VIDEO
+  FETCH_USER,
+  FETCH_VIDEO,
+  INIT_USER,
+  UPDATE_USER,
+  UPDATE_VIDEO
 } from "../actionType";
+import { convertUTC, convertUTCDate, formatDateTime } from "../../common/utilities";
 
 import { API } from "../../static/constant";
 import axios from "axios";
-import { formatDateTime } from "../../common/utilities";
 import { httpService } from "../../common/httpService";
 
 export const updateVideos = (
-    fromDate,
-    toDate,
-    pagination,
-    min = undefined,
-    max = undefined,
-    callbackSuccess = undefined,
-    callbackFail = undefined
-  ) => {
-    return dispatch => {
-      dispatch({
-        type: FETCH_VIDEO,
-        payload: null
-      });
-      if (fromDate === undefined || toDate === undefined) {
-         toDate = new Date();
-         fromDate = new Date();
-         fromDate.setDate(toDate.getDay() - 10);
-      }
-      var query = `${API.GET_VIDEO_LIST}`;
+  fromDate,
+  toDate,
+  pagination,
+  min = undefined,
+  max = undefined,
+  callbackSuccess = undefined,
+  callbackFail = undefined
+) => {
+  return dispatch => {
+    dispatch({
+      type: FETCH_VIDEO,
+      payload: null
+    });
+    if (fromDate === undefined || toDate === undefined) {
+      toDate = new Date();
+      fromDate = new Date();
+      fromDate.setDate(toDate.getDay() - 10);
+    }
+    toDate = convertUTCDate(toDate);
+    fromDate = convertUTCDate(fromDate);
+    
+    var query = `${API.GET_VIDEO_LIST}`;
     //   var queryDate = `minDate=${formatDateTime(fromDate)}&maxDate=${formatDateTime(toDate)}&page=${pagination}`;
     //   var queryRange =  "";
     //   query = query + "?"+ queryDate;
@@ -44,22 +47,21 @@ export const updateVideos = (
     //     queryRange = `&maxAge=${max}&minAge=${min}`;
     //     query = query + queryRange;
     //   }
-      httpService
-        .get(query)
-        .then(res => {
-          console.log(res.data);
-  
-          dispatch({
-            type: UPDATE_VIDEO,
-            payload: {
-              ...res.data
-            }
-          });
-          if (callbackSuccess !== undefined) callbackSuccess();
-        })
-        .catch(err => {
-          if (callbackFail !== undefined) callbackFail();
+    httpService
+      .get(query)
+      .then(res => {
+        console.log(res.data);
+
+        dispatch({
+          type: UPDATE_VIDEO,
+          payload: {
+            ...res.data
+          }
         });
-    };
+        if (callbackSuccess !== undefined) callbackSuccess();
+      })
+      .catch(err => {
+        if (callbackFail !== undefined) callbackFail();
+      });
   };
-  
+};

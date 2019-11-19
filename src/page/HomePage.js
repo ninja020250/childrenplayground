@@ -10,6 +10,7 @@ import React, { Component } from "react";
 import { checkToken, forgetUser, userLogout } from "../store/action/userAction";
 
 import { Layout } from "antd";
+import PlayVideo from "../container/PlayVideo";
 import VideoList from "../container/VideoList";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -34,7 +35,7 @@ const routes = [
     iconType: "database"
   },
   {
-    name: "Camera quan sát",
+    name: "Camera Quan Sát",
     address: "/home/stream",
     iconType: "video-camera"
   }
@@ -100,9 +101,16 @@ class HomePage extends Component {
                       component={Stream}
                     />
                      <Route
+                     exact
                       key="route-4"
                       path={`${this.props.match.path}/videos`}
                       component={VideoList}
+                    />
+                    <Route
+                    exact
+                      key="route-5"
+                      path={`${this.props.match.path}/videos/:id`}
+                      component={PlayVideo}
                     />
                   </Switch>
                 </Content>

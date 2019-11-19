@@ -5,10 +5,10 @@ import {
   UPDATE_IMAGE,
   UPDATE_USER
 } from "../actionType";
+import { convertUTCDate, formatDateTime } from "../../common/utilities";
 
 import { API } from "../../static/constant";
 import axios from "axios";
-import { formatDateTime } from "../../common/utilities";
 import { httpService } from "../../common/httpService";
 
 export const updateImages = (
@@ -30,6 +30,9 @@ export const updateImages = (
        fromDate = new Date();
        fromDate.setDate(toDate.getDay() - 10);
     }
+    toDate = convertUTCDate(toDate);
+    fromDate = convertUTCDate(fromDate);
+    
     var query = `${API.GET_IMAGE}`;
     var queryDate = `minDate=${formatDateTime(fromDate)}&maxDate=${formatDateTime(toDate)}&page=${pagination}`;
     var queryRange =  "";

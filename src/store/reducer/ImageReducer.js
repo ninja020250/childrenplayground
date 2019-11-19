@@ -22,7 +22,7 @@ const initialState = {
 //             "createdTime": "2019-11-11T16:13:37.577000Z"
 //         }
 //     ],
-//     "AgePredictions": [
+//     "agePredictions": [
 //         {
 //             "levelWarning": {
 //                 "levelWarningName": "Semi-Dangerous",

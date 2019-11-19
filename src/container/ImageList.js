@@ -1,6 +1,7 @@
 import {
   Button,
   DatePicker,
+  Icon,
   Input,
   InputNumber,
   Modal,
@@ -248,17 +249,25 @@ export const ImageListOption = props => {
 };
 
 export class ImageTable extends Component {
-  state = { visible: false, currentPage: 1, row: {} };
+  state = {
+    visible: false,
+    currentPage: 1,
+    row: {},
+    currentRow: {},
+    nexRow: {},
+    preRow: {}
+  };
   getRows = () => {
     return this.props.images.map((row, index) => {
-      var ages = Object.assign([], row.AgePredictions);
-      var AgePredicted = row.AgePredictions.map((age, index) => {
+      var ages = Object.assign([], row.agePredictions);
+      var agePredicted = row.agePredictions.map((age, index) => {
         return (
           <div key={`${index}-age-${row.imageId}`}>
             {age.age}:<Tag color="red">{age.levelWarning.levelWarningName}</Tag>
           </div>
         );
       });
+      var detectDate = toStringDate(row.createdTime);
       return (
         <tr key={`${index}-imageList-${row.imageId}`}>
           <td>{row.imageId}</td>
@@ -268,12 +277,25 @@ export class ImageTable extends Component {
               alt="face detected"
               src={row.imageLink}
               onClick={() => {
-                this.showModal(row, ages  );
+                var nexRow = index + 1;
+                var preRow = index - 1;
+                if (index + 1 >= this.props.images.length) {
+                  nexRow = undefined;
+                }
+                if (index - 1 < 0) {
+                  preRow = undefined;
+                }
+                this.setState(
+                  { currentRow: index, nexRow: nexRow, preRow: preRow },
+                  () => {
+                    this.showModal(row, ages);
+                  }
+                );
               }}
             />
           </td>
-          <td>{AgePredicted}</td>
-          <td>{row.updatedTime}</td>
+          <td>{agePredicted}</td>
+          <td>{detectDate}</td>
         </tr>
       );
     });
@@ -285,7 +307,48 @@ export class ImageTable extends Component {
       ages: ages
     });
   };
-
+  handleNext = ( ) =>{
+    var { nexRow } = this.state;
+    if ( nexRow !== undefined) {
+      var currentRow = nexRow;
+      var nexRow = currentRow + 1;
+      var preRow = currentRow - 1;
+      if (currentRow + 1 >= this.props.images.length) {
+        nexRow = undefined;
+      }
+      if (currentRow - 1 < 0) {
+        preRow = undefined;
+      }
+      
+      this.setState({
+        visible: true,
+        row: this.props.images[currentRow],
+        ages: this.props.images[currentRow].agePredictions,
+        currentRow: currentRow, nexRow: nexRow, preRow: preRow
+      });
+    }
+  }
+  handlePre = ( ) =>{
+    var { preRow } = this.state;
+    if ( preRow !== undefined) {
+      var currentRow = preRow;
+      var nexRow = currentRow + 1;
+      var preRow = currentRow - 1;
+      if (currentRow + 1 >= this.props.images.length) {
+        nexRow = undefined;
+      }
+      if (currentRow - 1 < 0) {
+        preRow = undefined;
+      }
+      
+      this.setState({
+        visible: true,
+        row: this.props.images[currentRow],
+        ages: this.props.images[currentRow].agePredictions,
+        currentRow: currentRow, nexRow: nexRow, preRow: preRow
+      });
+    }
+  }
   handleOk = e => {
     this.setState({
       visible: false
@@ -297,10 +360,10 @@ export class ImageTable extends Component {
       visible: false
     });
   };
-
+ 
   render() {
     var { imageLink, createdTime, imageId } = this.state.row;
-    var {ages} =  this.state;
+    var { ages } = this.state;
     var timeDescription = toStringDate(createdTime);
     var dectectionDescription = getDetectDescription(ages);
     return (
@@ -315,7 +378,11 @@ export class ImageTable extends Component {
           <div className="dl-col">
             <p>{`Chụp vào ${timeDescription}`}</p>
             <p>{dectectionDescription}</p>
-            <img alt="zoom" src={imageLink} />
+            <div class="model-group-switchimage">
+              <Icon type="caret-left" onClick={this.handlePre}/>
+              <Icon type="caret-right" onClick={this.handleNext}/>
+            </div>
+            <img key={imageId} alt="zoom" src={imageLink} className="" />
           </div>
         </Modal>
         <table className="">

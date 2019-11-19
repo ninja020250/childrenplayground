@@ -12,15 +12,19 @@ const data = [
     keyrender: "1"
   },
   {
-    title: "Camera quan sát",
+    title: "Danh Sách Video Đã Lưu",
     description:
-      "Hệ thống quan sát và thông báo khu vực vui chơi trẻ em thông qua camera đã lắp đặt sẵn.",
-    router: "/home/stream",
+      "Danh sách những video đã được ghi lại trước đó. bạn có thể xem lại video bằng cách bấm vào nút xem video ở video đó",
+    router: "/home/videos",
     keyrender: "2"
   },
 
   {
-    title: "Title 3"
+    title: "Camera Quan Sát",
+    description:
+      "Hệ thống quan sát và thông báo khu vực vui chơi trẻ em thông qua camera đã lắp đặt sẵn.",
+    router: "/home/stream",
+    keyrender: "3"
   },
   {
     title: "Title 4"

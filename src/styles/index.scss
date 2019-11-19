@@ -2,6 +2,8 @@
 @import "./homePage.scss";
 @import "./table.scss";
 @import "./loading.scss";
+@import "../../node_modules/video-react/styles/scss/video-react.scss"; // play video
+// ~video-react/styles/scss/video-react
 .centering {
   position: absolute;
   top: 50%;
@@ -23,66 +25,83 @@
 .mr-2 {
   margin-right: 2rem;
 }
-.mr-1{
+.mr-1 {
   margin-right: 1rem;
 }
 .modal-zoomImage {
   width: 700px !important;
-  .ant-modal-body{
+  .ant-modal-body {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .ant-btn-primary{
+  .ant-btn-primary {
     display: none;
   }
 }
-.flex-center{
+.flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.ant-menu{
-  .custom-menu-item{
-   padding: 0 0 ;
-   .ant-menu-item-selected{
-     color: #ffffff !important;
-   }
-    a{
-      padding: 0 .7rem !important;
-      
+.ant-menu {
+  .custom-menu-item {
+    padding: 0 0;
+    .ant-menu-item-selected {
+      color: #ffffff !important;
+    }
+    a {
+      padding: 0 0.7rem !important;
     }
   }
 }
-.right-header{
+.right-header {
   background: #001529;
   line-height: 64px;
   color: #ffffff;
 }
 
-.dl{
+.dl {
   display: flex;
 }
-.dl-col{
+.dl-col {
   display: flex;
   flex-direction: column;
 }
-.card-landing-custom{
-  .ant-card-body{
+.card-landing-custom {
+  .ant-card-body {
     min-height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  
 }
 
-.ant-menu-item-selected{
-background-color: unset !important;
+.ant-menu-item-selected {
+  background-color: unset !important;
 }
 
-.item-active-custom{
+.item-active-custom {
   background-color: #1890ff;
   color: white !important;
   border-left: 5px solid #1774ca;
+}
+
+.model-group-switchimage {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: 50%;
+  i {
+    font-size: 35px;
+    color: #1890ff;
+    cursor: pointer;
+    &:active{
+      transform: translateY(6px);
+      color: white;
+      transition: all .5s;
+    }
+  }
 }
