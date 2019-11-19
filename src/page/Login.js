@@ -36,16 +36,18 @@ export class NormalLoginForm extends React.Component {
     super(props);
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      isRemember: false,
     };
   }
   handleSubmit = e => {
     e.preventDefault();
-    const { username, password } = this.state;
+    const { username, password, isRemember } = this.state;
     this.props.form.validateFields((err, values) => {
       var data = {
         username: username,
-        password: password
+        password: password,
+        isRemember: isRemember,
       };
       this.props.initUser(
         data,
@@ -73,18 +75,27 @@ export class NormalLoginForm extends React.Component {
       [name]: value
     });
   };
+
+  handleCheckbox = e =>{
+    var value = e.target.checked;
+    var name = e.target.name;
+    this.setState({
+      [name]: value
+    });
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
+    const {isRemember} = this.state;
     return (
       <Form onSubmit={this.handleSubmit} className="login-form ">
-        <h1 style={{ textAlign: "center" }}>Children's PLayground CMS Login</h1>
+        <h1 style={{ textAlign: "center" }}>HỆ THỐNG QUẢN LÝ CAMERA</h1>
         <Form.Item>
           {getFieldDecorator("username", {
-            rules: [{ required: true, message: "Please input your username!" }]
+            rules: [{ required: true, message: "Vui lòng điền tên đang nhập!" }]
           })(
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Username"
+              placeholder="Tên Đăng Nhập"
               name="username"
               onChange={this.handleInput}
             />
@@ -92,31 +103,29 @@ export class NormalLoginForm extends React.Component {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator("password", {
-            rules: [{ required: true, message: "Please input your Password!" }]
+            rules: [{ required: true, message: "Vui lòng điền mật khẩu!" }]
           })(
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="password"
-              placeholder="Password"
+              placeholder="Mật Khẩu"
               name="password"
               onChange={this.handleInput}
             />
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator("remember", {
+          {/* {getFieldDecorator("remember", {
             valuePropName: "checked",
-            initialValue: true
-          })(<Checkbox>Remember me</Checkbox>)}
-          <a className="login-form-forgot" href="">
-            Forgot password
-          </a>
+            initialValue: isRemember
+          })(<Checkbox name="isRemember" onChange={this.handleCheckbox}></Checkbox>)}
+          */}
           <Button
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-            Log in
+            Đăng Nhập
           </Button>
         </Form.Item>
       </Form>
@@ -125,7 +134,7 @@ export class NormalLoginForm extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return{};
 };
 
 let mapDispatchToProps = dispatch => {

@@ -7,6 +7,7 @@ const initialState = {
     email: "",
     fullname: ""
   },
+  isRemember: false,
   loading: false
 };
 
@@ -22,6 +23,7 @@ export default function(state = initialState, action) {
         ...state,
         token: action.payload.token,
         user: { ...action.payload.user },
+        isRemember: action.payload.isRemember,
         loading: false
       };
     case UPDATE_USER:

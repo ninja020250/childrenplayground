@@ -1,7 +1,7 @@
 import { UPDATE_PAGI } from "../actionType";
 
 const initialState = {
-  page: undefined,
+  page: 1,
   pageSize: undefined
 };
 

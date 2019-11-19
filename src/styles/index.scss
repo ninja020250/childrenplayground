@@ -23,7 +23,9 @@
 .mr-2 {
   margin-right: 2rem;
 }
-
+.mr-1{
+  margin-right: 1rem;
+}
 .modal-zoomImage {
   width: 700px !important;
   .ant-modal-body{
@@ -60,4 +62,14 @@
 
 .dl{
   display: flex;
+}
+
+.card-landing-custom{
+  .ant-card-body{
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
 }

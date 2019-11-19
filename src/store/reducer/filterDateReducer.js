@@ -2,7 +2,8 @@ import { UPDATE_FILTER_DATE } from "../actionType";
 
 const initialState = {
   from: undefined,
-  to: undefined
+  to: undefined,
+  
 };
 
 export default function(state = initialState, action) {

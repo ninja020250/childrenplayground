@@ -2,13 +2,21 @@ import {
   Button,
   DatePicker,
   Input,
+  InputNumber,
   Modal,
   PageHeader,
   Pagination,
   Tag
 } from "antd";
 import React, { Component } from "react";
-import { resetFiltersDate, updateFiltersDate } from "../store/action/filterDateAction";
+import {
+  resetFiltersDate,
+  updateFiltersDate
+} from "../store/action/filterDateAction";
+import {
+  resetFiltersRange,
+  updateFiltersRange
+} from "../store/action/filterRangeAction";
 
 import { LineLoading } from "../common/LineLoading";
 import { bindActionCreators } from "redux";
@@ -23,26 +31,55 @@ class ImageList extends Component {
     super(props);
   }
   componentDidMount() {
-    const { filterDate } = this.props;
-    this.handleUpdateImageList(filterDate, 1);
+    const { filterDate, filterRange } = this.props;
+
+    this.handleUpdateImageList(
+      filterDate,
+      1,
+      filterRange.min,
+      filterRange.max,
+      undefined,
+      undefined
+    );
     // this.props.updateImages(undefined, undefined);
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.filterDate !== nextProps.filterDate) {
-      this.handleUpdateImageList(nextProps.filterDate, 1);
-    }
-    if (this.props.pagi.page !== nextProps.pagi.page) {
-      this.handleUpdateImageList(nextProps.filterDate, nextProps.pagi.page);
+      this.handleUpdateImageList(
+        nextProps.filterDate,
+        nextProps.pagi.page,
+        nextProps.filterRange.min,
+        nextProps.filterRange.max
+      );
+    } else if (this.props.pagi.page !== nextProps.pagi.page) {
+      this.handleUpdateImageList(
+        nextProps.filterDate,
+        nextProps.pagi.page,
+        nextProps.filterRange.min,
+        nextProps.filterRange.max
+      );
+    } else if (this.props.filterRange !== nextProps.filterRange) {
+      this.handleUpdateImageList(
+        nextProps.filterDate,
+        nextProps.pagi.page,
+        nextProps.filterRange.min,
+        nextProps.filterRange.max
+      );
     }
   }
   handleUpdateImageList = (
     filterDate = this.props.filterDate,
-    pagination = this.props.pagi.page
+
+    pagination = this.props.pagi.page,
+    min = this.props.filterRange.min,
+    max = this.props.filterRange.max
   ) => {
     this.props.updateImages(
       filterDate.from,
       filterDate.to,
       pagination,
+      min,
+      max,
       undefined,
       undefined
     );
@@ -68,7 +105,9 @@ class DateRange extends React.Component {
   state = {
     startValue: null,
     endValue: null,
-    endOpen: false
+    endOpen: false,
+    min: undefined,
+    max: undefined
   };
 
   disabledStartDate = startValue => {
@@ -92,7 +131,28 @@ class DateRange extends React.Component {
       [field]: value
     });
   };
-
+  onChangeMin = value => {
+    value = (value === null) ? undefined : value;
+    this.setState({
+      ...this.state,
+      min: value
+    });
+    // this.props.updateFiltersRange({
+    //   min: value,
+    //   max: this.props.filterRange.max
+    // });
+  };
+  onChangeMax = value => {
+    value = (value === null) ? undefined : value;
+    this.setState({
+      ...this.state,
+      max: value
+    });
+    // this.props.updateFiltersRange({
+    //   min: this.props.filterRange.min,
+    //   max: value
+    // });
+  };
   onStartChange = value => {
     this.onChange("startValue", value);
   };
@@ -112,14 +172,16 @@ class DateRange extends React.Component {
   };
 
   onFilterDate = () => {
-    var { startValue, endValue } = this.state;
+    var { startValue, endValue, min, max } = this.state;
     if (startValue !== null && endValue !== null)
       this.props.updateFiltersDate(startValue, endValue);
+
+    this.props.updateFiltersRange(min, max);
   };
-  onResetFilterDate = ()=>{
-    this.props.resetFiltersDate()
-  }
-  
+  onResetFilterDate = () => {
+    this.props.resetFiltersDate();
+  };
+
   render() {
     const { startValue, endValue, endOpen } = this.state;
     return (
@@ -132,7 +194,7 @@ class DateRange extends React.Component {
           placeholder="Từ ngày"
           onChange={this.onStartChange}
           onOpenChange={this.handleStartOpenChange}
-          className="mr-2"
+          className="mr-1"
         />
         <DatePicker
           disabledDate={this.disabledEndDate}
@@ -143,11 +205,26 @@ class DateRange extends React.Component {
           onChange={this.onEndChange}
           open={endOpen}
           onOpenChange={this.handleEndOpenChange}
-          className="mr-2"
+          className="mr-1"
         />
-        <Button className="mr-2" onClick={this.onResetFilterDate}>
+        <InputNumber
+          className="mr-1"
+          min={11}
+          max={70}
+          onChange={this.onChangeMin}
+          placeholder="tuổi thấp nhất"
+        />
+        <InputNumber
+          className="mr-1"
+          min={11}
+          max={70}
+          onChange={this.onChangeMax}
+          placeholder="tuổi cao nhất"
+        />
+        <Button className="mr-1" onClick={this.onResetFilterDate}>
           Bỏ lọc
         </Button>
+
         <Button onClick={this.onFilterDate}>Lọc</Button>
       </div>
     );
@@ -180,18 +257,18 @@ export const ImageListOption = props => {
 };
 
 export class ImageTable extends Component {
-  state = { visible: false, currentPage: 1 };
+  state = { visible: false, currentPage: 1, row: {} };
   getRows = () => {
     return this.props.images.map((row, index) => {
       var AgePredicted = row.AgePredictions.map((age, index) => {
         return (
-          <div key={`${index}-age`}>
+          <div key={`${index}-age-${row.imageId}`}>
             {age.age}:<Tag color="red">{age.levelWarning.levelWarningName}</Tag>
           </div>
         );
       });
       return (
-        <tr key={`${index}-imageList`}>
+        <tr key={`${index}-imageList-${row.imageId}`}>
           <td>{row.imageId}</td>
           <td>
             <img
@@ -199,7 +276,7 @@ export class ImageTable extends Component {
               alt="face detected"
               src={row.imageLink}
               onClick={() => {
-                this.showModal(row.imageLink, row.createdTime);
+                this.showModal(row);
               }}
             />
           </td>
@@ -209,11 +286,10 @@ export class ImageTable extends Component {
       );
     });
   };
-  showModal = (imgLink, time) => {
+  showModal = row => {
     this.setState({
       visible: true,
-      imgLink: imgLink,
-      time: time
+      row: row
     });
   };
 
@@ -230,17 +306,17 @@ export class ImageTable extends Component {
   };
 
   render() {
-    var { imgLink, time } = this.state;
+    var { imageLink, createdTime } = this.state.row;
     return (
       <div>
         <Modal
           className="modal-zoomImage"
-          title={time}
+          title={createdTime}
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <img alt="zoom" src={imgLink} />
+          <img alt="zoom" src={imageLink} />
         </Modal>
         <table className="">
           <tbody>
@@ -269,6 +345,7 @@ const mapStateToProps = state => {
   return {
     imageList: state.imageList,
     filterDate: state.filterDate,
+    filterRange: state.filterRange,
     pagi: state.pagi
   };
 };
@@ -278,7 +355,9 @@ let mapDispatchToProps = dispatch => {
     updateImages: bindActionCreators(updateImages, dispatch),
     updateFiltersDate: bindActionCreators(updateFiltersDate, dispatch),
     updatePagination: bindActionCreators(updatePagination, dispatch),
-    resetFiltersDate: bindActionCreators(resetFiltersDate, dispatch)
+    resetFiltersDate: bindActionCreators(resetFiltersDate, dispatch),
+    updateFiltersRange: bindActionCreators(updateFiltersRange, dispatch),
+    resetFiltersRange: bindActionCreators(resetFiltersRange, dispatch)
   };
 };
 

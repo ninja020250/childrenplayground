@@ -14,7 +14,8 @@ export const initUser = (
       type: FETCH_USER,
       payload: null
     });
-    httpService.post(API.LOGIN, { ...data })
+    httpService
+      .post(API.LOGIN, { ...data })
       .then(res => {
         localStorage.setItem("token", res.data.token);
         dispatch({
@@ -55,5 +56,12 @@ export const checkToken = (
       .catch(err => {
         if (callbackFail !== undefined) callbackFail();
       });
+  };
+};
+
+export const userLogout = (callback = undefined) => {
+  return dispatch => {
+    localStorage.removeItem("token");
+    if (callback !== undefined) callback();
   };
 };
