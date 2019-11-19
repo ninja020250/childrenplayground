@@ -10,12 +10,35 @@ import React, { Component } from "react";
 import { checkToken, forgetUser, userLogout } from "../store/action/userAction";
 
 import { Layout } from "antd";
+import VideoList from "../container/VideoList";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import moduleName from "./";
 
 const { SubMenu } = Menu;
 const { Sider, Header, Footer, Content } = Layout;
+const routes = [
+  {
+    name: "Trang Chính",
+    address: "/home",
+    iconType: "home"
+  },
+  {
+    name: "Danh Sách Ảnh",
+    address: "/home/images",
+    iconType: "file-image"
+  },
+  {
+    name: "Danh Sách Video",
+    address: "/home/videos",
+    iconType: "database"
+  },
+  {
+    name: "Camera quan sát",
+    address: "/home/stream",
+    iconType: "video-camera"
+  }
+];
 
 class HomePage extends Component {
   constructor(props) {
@@ -50,6 +73,7 @@ class HomePage extends Component {
                 <Sider className="ant-sider">
                   <SideMenu />
                 </Sider>
+
                 <Content
                   style={{
                     padding: 24,
@@ -75,8 +99,14 @@ class HomePage extends Component {
                       path={`${this.props.match.path}/stream`}
                       component={Stream}
                     />
+                     <Route
+                      key="route-4"
+                      path={`${this.props.match.path}/videos`}
+                      component={VideoList}
+                    />
                   </Switch>
                 </Content>
+            
               </Layout>
               <Footer>Footer</Footer>
             </Layout>
@@ -101,75 +131,54 @@ export class HeaderMenu extends React.Component {
           mode="horizontal"
           style={{ lineHeight: "64px", width: "70%" }}
         >
-          <Menu.Item key="menu-header-1" style={{ padding: "0" }}>
+          <Menu.Item style={{ padding: "0"  }}>
             <div
               className=" flex-center"
               style={{
                 width: "200px",
                 height: "64px",
-                background: "rgba(255, 255, 255, 0.2)"
+                background: "rgba(255, 255, 255, 0.2)",
+                border: "10px solid",
               }}
             >
               <NavLink
-                key={"header-menu-logo"}
                 exact
                 // activeClassName="ant-menu-item-active ant-menu-item-selected"
                 to="/home"
               >
                 <img
-                  style={{ width: "30px", height: "30px" }}
+                  style={{ width: "30px", height: "30px", }}
                   alt="logo"
                   src={require("../static/imgs/cctv.png")}
                 />
               </NavLink>
             </div>
           </Menu.Item>
-          <li
-            key="header-menu-li-1"
-            className="ant-menu-item  custom-menu-item"
-          >
-            <NavLink
-              key={"header-menu-li-nav-1"}
-              exact
-              activeClassName="ant-menu-item-active ant-menu-item-selected"
-              to="/home/stream/"
-            >
-              Quan Sát Video
-            </NavLink>
-          </li>
-          <li
-            key="header-menu-li-2"
-            className="ant-menu-item  custom-menu-item"
-          >
-            <NavLink
-              key={"header-menu-li-nav-2"}
-              exact
-              activeClassName="ant-menu-item-active ant-menu-item-selected "
-              to="/home/images"
-            >
-              Danh Sách Ảnh
-            </NavLink>
-          </li>
-          <li
-            key="header-menu-li-3"
-            className="ant-menu-item  custom-menu-item"
-          >
-            <NavLink
-              key={"header-menu-li-nav-3"}
-              exact
-              activeClassName="ant-menu-item-active ant-menu-item-selected "
-              to="/home"
-            >
-              Trang Chủ
-            </NavLink>
-          </li>
+          {routes.map((route, index) => {
+            return (
+              <Menu.Item key={`header-menu-${index}-nv`} className="custom-menu-item">
+              
+                  <NavLink
+                    exact
+                    activeClassName="item-active-custom"
+                    to={route.address}
+                  >
+                    {route.name}
+                  </NavLink>
+              </Menu.Item>
+            );
+          })}
         </Menu>
-        <div className="right-header" style={{ width: "30%" }}>
+        <div
+          className="right-header"
+          style={{ width: "30%" }}
+          key="user-logout"
+        >
           <Tag color="blue">
             <strong>Hệ Thống Quan Sát Khu Vui Chơi Trẻ Em</strong>
           </Tag>
           <Button type="primary" size="small" onClick={this.logOut}>
-            Logout
+            Logout <Icon type="logout" />
           </Button>
         </div>
       </div>
@@ -184,41 +193,25 @@ class SideMenu extends React.Component {
   render() {
     return (
       <Menu
+        key="side-menu"
         onClick={this.handleClick}
-        mode="inline"
+        // mode="inline"
         theme="dark"
         style={{ height: "100%", borderRight: 0 }}
       >
-        <li className="ant-menu-item  custom-menu-item" key="side-menu-item-1">
-          <NavLink
-            key="side-menu-1"
-            exact
-            activeClassName="ant-menu-item-active ant-menu-item-selected "
-            to="/home"
-          >
-            Trang Chủ
-          </NavLink>
-        </li>
-        <li className="ant-menu-item  custom-menu-item" key="side-menu-item-2">
-          <NavLink
-            key="side-menu-1"
-            exact
-            activeClassName="ant-menu-item-active ant-menu-item-selected "
-            to="/home/images"
-          >
-            Danh Sách Ảnh
-          </NavLink>
-        </li>
-        <li className="ant-menu-item  custom-menu-item" key="side-menu-item-3">
-          <NavLink
-            key="side-menu-2"
-            exact
-            activeClassName="ant-menu-item-active ant-menu-item-selected"
-            to="/home/stream/"
-          >
-            Quan Sát Video
-          </NavLink>
-        </li>
+        {routes.map((route, index) => {
+          return (
+            <Menu.Item key={`sidemenu-${index}`} className="custom-menu-item">
+              <NavLink
+                exact
+                activeClassName="item-active-custom"
+                to={`${route.address}`}
+              >
+                <Icon type={route.iconType} /> {route.name}
+              </NavLink>
+            </Menu.Item>
+          );
+        })}
       </Menu>
     );
   }

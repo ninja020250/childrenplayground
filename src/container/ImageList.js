@@ -9,6 +9,7 @@ import {
   Tag
 } from "antd";
 import React, { Component } from "react";
+import { getDetectDescription, toStringDate } from "../common/utilities";
 import {
   resetFiltersDate,
   updateFiltersDate
@@ -41,7 +42,6 @@ class ImageList extends Component {
       undefined,
       undefined
     );
-    // this.props.updateImages(undefined, undefined);
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.filterDate !== nextProps.filterDate) {
@@ -91,7 +91,6 @@ class ImageList extends Component {
     return (
       <div className="content-wrapper">
         <h1>Hình Ảnh Phát Hiện Quá Tuổi Cho Phép</h1>
-
         <ImageListOption images={results} count={count} {...this.props} />
         <div className="table-1">
           {loading && <LineLoading />}
@@ -132,26 +131,18 @@ class DateRange extends React.Component {
     });
   };
   onChangeMin = value => {
-    value = (value === null) ? undefined : value;
+    value = value === null ? undefined : value;
     this.setState({
       ...this.state,
       min: value
     });
-    // this.props.updateFiltersRange({
-    //   min: value,
-    //   max: this.props.filterRange.max
-    // });
   };
   onChangeMax = value => {
-    value = (value === null) ? undefined : value;
+    value = value === null ? undefined : value;
     this.setState({
       ...this.state,
       max: value
     });
-    // this.props.updateFiltersRange({
-    //   min: this.props.filterRange.min,
-    //   max: value
-    // });
   };
   onStartChange = value => {
     this.onChange("startValue", value);
@@ -260,6 +251,7 @@ export class ImageTable extends Component {
   state = { visible: false, currentPage: 1, row: {} };
   getRows = () => {
     return this.props.images.map((row, index) => {
+      var ages = Object.assign([], row.AgePredictions);
       var AgePredicted = row.AgePredictions.map((age, index) => {
         return (
           <div key={`${index}-age-${row.imageId}`}>
@@ -276,7 +268,7 @@ export class ImageTable extends Component {
               alt="face detected"
               src={row.imageLink}
               onClick={() => {
-                this.showModal(row);
+                this.showModal(row, ages  );
               }}
             />
           </td>
@@ -286,10 +278,11 @@ export class ImageTable extends Component {
       );
     });
   };
-  showModal = row => {
+  showModal = (row, ages) => {
     this.setState({
       visible: true,
-      row: row
+      row: row,
+      ages: ages
     });
   };
 
@@ -306,17 +299,24 @@ export class ImageTable extends Component {
   };
 
   render() {
-    var { imageLink, createdTime } = this.state.row;
+    var { imageLink, createdTime, imageId } = this.state.row;
+    var {ages} =  this.state;
+    var timeDescription = toStringDate(createdTime);
+    var dectectionDescription = getDetectDescription(ages);
     return (
       <div>
         <Modal
           className="modal-zoomImage"
-          title={createdTime}
+          title={`Số Hiệu Hình Ảnh: ${imageId}`}
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <img alt="zoom" src={imageLink} />
+          <div className="dl-col">
+            <p>{`Chụp vào ${timeDescription}`}</p>
+            <p>{dectectionDescription}</p>
+            <img alt="zoom" src={imageLink} />
+          </div>
         </Modal>
         <table className="">
           <tbody>
