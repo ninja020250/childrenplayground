@@ -36,3 +36,51 @@
     }
   }
 }
+
+
+.table-2 {
+  border: 1px solid #f2f4f5;
+  height: 80vh;
+  overflow: auto;
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th {
+    background: #f2f4f5;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    font-variant: tabular-nums;
+    line-height: 1.5;
+    list-style: none;
+    -webkit-font-feature-settings: "tnum";
+    font-feature-settings: "tnum";
+    position: relative;
+  }
+  tr {
+    background: none;
+    transition: all 0.3s ease-in;
+  }
+  tr {
+    .ant-card:hover{
+      transform: translateY(-5px);
+      color: white;
+      transition: all 0.5s;
+      background: #e6f7ff;
+      color: #1967d2;
+      border: 1px solid #1967d2;
+    }
+  
+  }
+  td,
+  th {
+    text-align: left;
+    padding: 16px 16px;
+    border-bottom: 1px solid #ebedf0;
+    img {
+      width: 60px;
+      height: 60px;
+    }
+  }
+}

@@ -1,23 +1,7 @@
-import {
-  Button,
-  DatePicker,
-  Icon,
-  Input,
-  InputNumber,
-  Modal,
-  PageHeader,
-  Pagination,
-  Tag
-} from "antd";
+import { Button, Card, Col, DatePicker, Icon, Pagination, Row } from "antd";
 import React, { Component } from "react";
-import {
-  resetFiltersDate,
-  updateFiltersDate
-} from "../store/action/filterDateAction";
-import {
-  resetFiltersRange,
-  updateFiltersRange
-} from "../store/action/filterRangeAction";
+import { resetFiltersDate, updateFiltersDate } from "../store/action/filterDateAction";
+import { resetFiltersRange, updateFiltersRange } from "../store/action/filterRangeAction";
 
 import { LineLoading } from "../common/LineLoading";
 import { bindActionCreators } from "redux";
@@ -54,14 +38,7 @@ class VideoList extends Component {
         nextProps.filterRange.min,
         nextProps.filterRange.max
       );
-    } else if (this.props.filterRange !== nextProps.filterRange) {
-      this.handleUpdateVideoList(
-        nextProps.filterDate,
-        nextProps.pagi.page,
-        nextProps.filterRange.min,
-        nextProps.filterRange.max
-      );
-    }
+    } 
   }
   handleUpdateVideoList = (
     filterDate = this.props.filterDate,
@@ -74,8 +51,7 @@ class VideoList extends Component {
       filterDate.from,
       filterDate.to,
       pagination,
-      min,
-      max,
+   
       undefined,
       undefined
     );
@@ -88,7 +64,7 @@ class VideoList extends Component {
           <h1>Danh Sách Video</h1>
   
           <VideoListOption videos={results} count={count} {...this.props} />
-          <div className="table-1">
+          <div className="table-2">
             {loading && <LineLoading />}
             <VideoTable videos={results} {...this.props} />
           </div>
@@ -102,8 +78,6 @@ class DateRange extends React.Component {
       startValue: null,
       endValue: null,
       endOpen: false,
-      min: undefined,
-      max: undefined
     };
   
     disabledStartDate = startValue => {
@@ -127,28 +101,7 @@ class DateRange extends React.Component {
         [field]: value
       });
     };
-    onChangeMin = value => {
-      value = (value === null) ? undefined : value;
-      this.setState({
-        ...this.state,
-        min: value
-      });
-      // this.props.updateFiltersRange({
-      //   min: value,
-      //   max: this.props.filterRange.max
-      // });
-    };
-    onChangeMax = value => {
-      value = (value === null) ? undefined : value;
-      this.setState({
-        ...this.state,
-        max: value
-      });
-      // this.props.updateFiltersRange({
-      //   min: this.props.filterRange.min,
-      //   max: value
-      // });
-    };
+
     onStartChange = value => {
       this.onChange("startValue", value);
     };
@@ -175,6 +128,11 @@ class DateRange extends React.Component {
       this.props.updateFiltersRange(min, max);
     };
     onResetFilterDate = () => {
+      this.setState({
+        startValue: null,
+        endValue: null,
+        endOpen: false,
+      })
       this.props.resetFiltersDate();
     };
   
@@ -203,20 +161,7 @@ class DateRange extends React.Component {
             onOpenChange={this.handleEndOpenChange}
             className="mr-1"
           />
-          <InputNumber
-            className="mr-1"
-            min={11}
-            max={70}
-            onChange={this.onChangeMin}
-            placeholder="tuổi thấp nhất"
-          />
-          <InputNumber
-            className="mr-1"
-            min={11}
-            max={70}
-            onChange={this.onChangeMax}
-            placeholder="tuổi cao nhất"
-          />
+        
           <Button className="mr-1" onClick={this.onResetFilterDate}>
             Bỏ lọc
           </Button>
@@ -258,53 +203,20 @@ export class VideoTable extends Component {
     getRows = () => {
         
       return this.props.videos.map((row, index) => {
-        // var agePredicted = row.agePredictions.map((age, index) => {
-        //   return (
-        //     <div key={`${index}-age-${row.videoId}`}>
-        //       {age.age}:<Tag color="red">{age.levelWarning.levelWarningName}</Tag>
-        //     </div>
-        //   );
-        // });
+      
         var time =  toStringDate(row.createdTime);
         return (
-          <tr key={`${index}-videoList-${row.videoId}`}>
-            <td>{row.videoId}</td>
-            <td>
-              <img
-                style={{ cursor: "pointer" }}
-                alt="face detected"
-                src={row.videoLink}
-                onClick={() => {
-                  this.showModal(row);
-                }}
-              />
-            </td>
-            <td/>
-            <td>{time}</td> 
-            <td><Button type="primary" 
-            onClick={()=>this.goVideoDetail(row.videoId)}><Icon type="play-square" /> Xem Lại Video</Button></td> 
-            {/* <td>
-              <img
-                style={{ cursor: "pointer" }}
-                alt="face detected"
-                src={row.videoLink}
-                onClick={() => {
-                  this.showModal(row);
-                }}
-              />
-            </td>
-            <td>{agePredicted}</td>
-            <td>{row.updatedTime}</td> */}
-          </tr>
+       
+              <Col   key={`${index}-videoList-${row.videoId}`} span={6} style={{padding: ".5rem 1rem"}}>
+              <Card style={{ cursor: "pointer" }}  title={`STT: ${index+1}`} onClick={()=>this.goVideoDetail(row.videoId)}><div className="btnPlay-container"><Icon type="play-square"  /></div><br/>{time} </Card>
+              </Col>
+        
+        
+      
         );
       });
     };
-    showModal = row => {
-      this.setState({
-        visible: true,
-        row: row
-      });
-    };
+    
   
     handleOk = e => {
       this.setState({
@@ -322,35 +234,15 @@ export class VideoTable extends Component {
       var { videoLink, createdTime } = this.state.row;
       return (
         <div>
-          <Modal
-            className="modal-zoomvideo"
-            title={createdTime}
-            visible={this.state.visible}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-          >
-            <img alt="zoom" src={videoLink} />
-          </Modal>
+         
           <table className="">
             <tbody>
               <tr>
                 <th>
-                  <div>ID</div>
-                </th>
-                <th>
-                  <div>Ảnh</div>
-                </th>
-                <th>
-                  <div>Tuổi phát hiện</div>
-                </th>
-                <th>
-                  <div>Ngày Lưu Video</div>
-                </th>
-                <th>
-                  <div>Tùy Chọn</div>
+                  <div>VIDEOS</div>
                 </th>
               </tr>
-              {this.getRows()}
+             <tr>   <Row> {this.getRows()}   </Row></tr>
             </tbody>
           </table>
         </div>

@@ -1,32 +1,14 @@
-import {
-  Button,
-  DatePicker,
-  Icon,
-  Input,
-  InputNumber,
-  Modal,
-  PageHeader,
-  Pagination,
-  Tag
-} from "antd";
+import { Button, DatePicker, Icon, Input, InputNumber, Modal, Pagination, Tag } from "antd";
 import React, { Component } from "react";
 import { getDetectDescription, toStringDate } from "../common/utilities";
-import {
-  resetFiltersDate,
-  updateFiltersDate
-} from "../store/action/filterDateAction";
-import {
-  resetFiltersRange,
-  updateFiltersRange
-} from "../store/action/filterRangeAction";
+import { resetFiltersDate, updateFiltersDate } from "../store/action/filterDateAction";
+import { resetFiltersRange, updateFiltersRange } from "../store/action/filterRangeAction";
 
 import { LineLoading } from "../common/LineLoading";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { updateImages } from "../store/action/imageAction";
 import { updatePagination } from "../store/action/pagiAction";
-
-const { Search } = Input;
 
 class ImageList extends Component {
   constructor(props) {
@@ -171,11 +153,20 @@ class DateRange extends React.Component {
     this.props.updateFiltersRange(min, max);
   };
   onResetFilterDate = () => {
-    this.props.resetFiltersDate();
+    this.setState({
+      startValue: null,
+      endValue: null,
+      endOpen: false,
+      min: undefined,
+      max: undefined
+    }, ()=>{
+      this.props.resetFiltersDate();
+    })
+  
   };
 
   render() {
-    const { startValue, endValue, endOpen } = this.state;
+    const { startValue, endValue, endOpen, min, max } = this.state;
     return (
       <div>
         <DatePicker
@@ -205,6 +196,7 @@ class DateRange extends React.Component {
           max={70}
           onChange={this.onChangeMin}
           placeholder="tuổi thấp nhất"
+          value={min}
         />
         <InputNumber
           className="mr-1"
@@ -212,6 +204,7 @@ class DateRange extends React.Component {
           max={70}
           onChange={this.onChangeMax}
           placeholder="tuổi cao nhất"
+          value={max}
         />
         <Button className="mr-1" onClick={this.onResetFilterDate}>
           Bỏ lọc
@@ -270,7 +263,7 @@ export class ImageTable extends Component {
       var detectDate = toStringDate(row.createdTime);
       return (
         <tr key={`${index}-imageList-${row.imageId}`}>
-          <td>{row.imageId}</td>
+          <td>{index}</td>
           <td>
             <img
               style={{ cursor: "pointer" }}
@@ -385,7 +378,7 @@ export class ImageTable extends Component {
             <img key={imageId} alt="zoom" src={imageLink} className="" />
           </div>
         </Modal>
-        <table className="">
+        <table >
           <tbody>
             <tr>
               <th>

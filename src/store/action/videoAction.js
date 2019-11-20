@@ -1,14 +1,7 @@
-import {
-  FETCH_USER,
-  FETCH_VIDEO,
-  INIT_USER,
-  UPDATE_USER,
-  UPDATE_VIDEO
-} from "../actionType";
-import { convertUTC, convertUTCDate, formatDateTime } from "../../common/utilities";
+import { FETCH_VIDEO, UPDATE_VIDEO } from "../actionType";
+import { convertUTCDate, formatDateTime } from "../../common/utilities";
 
 import { API } from "../../static/constant";
-import axios from "axios";
 import { httpService } from "../../common/httpService";
 
 export const updateVideos = (
@@ -34,19 +27,19 @@ export const updateVideos = (
     fromDate = convertUTCDate(fromDate);
     
     var query = `${API.GET_VIDEO_LIST}`;
-    //   var queryDate = `minDate=${formatDateTime(fromDate)}&maxDate=${formatDateTime(toDate)}&page=${pagination}`;
-    //   var queryRange =  "";
-    //   query = query + "?"+ queryDate;
-    //   if(min !== undefined && max === undefined){
-    //     queryRange = `&minAge=${min}&maxAge=${100}`;
-    //     query = query + queryRange;
-    //   }else if ( max !== undefined && min === undefined){
-    //     queryRange = `&maxAge=${max}&minAge=${1}`;
-    //     query = query + queryRange;
-    //   }else if(min !== undefined && max !== undefined){
-    //     queryRange = `&maxAge=${max}&minAge=${min}`;
-    //     query = query + queryRange;
-    //   }
+      var queryDate = `minDate=${formatDateTime(fromDate)}&maxDate=${formatDateTime(toDate)}&page=${pagination}`;
+      var queryRange =  "";
+      query = query + "?"+ queryDate;
+      if(min !== undefined && max === undefined){
+        queryRange = `&minAge=${min}&maxAge=${100}`;
+        query = query + queryRange;
+      }else if ( max !== undefined && min === undefined){
+        queryRange = `&maxAge=${max}&minAge=${1}`;
+        query = query + queryRange;
+      }else if(min !== undefined && max !== undefined){
+        queryRange = `&maxAge=${max}&minAge=${min}`;
+        query = query + queryRange;
+      }
     httpService
       .get(query)
       .then(res => {

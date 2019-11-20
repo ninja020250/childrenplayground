@@ -1,5 +1,6 @@
 import "antd/dist/antd.css";
 import "./styles/index.scss";
+import 'animate.css';
 
 import * as serviceWorker from "./serviceWorker";
 

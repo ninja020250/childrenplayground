@@ -1,7 +1,6 @@
 import { FETCH_USER, INIT_USER, UPDATE_USER } from "../actionType";
 
 import { API } from "../../static/constant";
-import axios from "axios";
 import { httpService } from "../../common/httpService";
 
 export const initUser = (

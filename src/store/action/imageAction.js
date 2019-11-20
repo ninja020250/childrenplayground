@@ -1,14 +1,7 @@
-import {
-  FETCH_IMAGE,
-  FETCH_USER,
-  INIT_USER,
-  UPDATE_IMAGE,
-  UPDATE_USER
-} from "../actionType";
+import { FETCH_IMAGE, UPDATE_IMAGE } from "../actionType";
 import { convertUTCDate, formatDateTime } from "../../common/utilities";
 
 import { API } from "../../static/constant";
-import axios from "axios";
 import { httpService } from "../../common/httpService";
 
 export const updateImages = (
@@ -50,7 +43,7 @@ export const updateImages = (
     httpService
       .get(query)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
 
         dispatch({
           type: UPDATE_IMAGE,

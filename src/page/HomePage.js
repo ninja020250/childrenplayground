@@ -1,20 +1,13 @@
-import { Button, Dropdown, Icon, Menu, Tag } from "antd";
+import { Button, Icon, Layout, Menu, Tag } from "antd";
 import { ImageList, LandingPage, Stream } from "../container";
-import {
-  NavLink,
-  Route,
-  BrowserRouter as Router,
-  Switch
-} from "react-router-dom";
+import { NavLink, Route, Switch } from "react-router-dom";
 import React, { Component } from "react";
-import { checkToken, forgetUser, userLogout } from "../store/action/userAction";
+import { checkToken, userLogout } from "../store/action/userAction";
 
-import { Layout } from "antd";
 import PlayVideo from "../container/PlayVideo";
 import VideoList from "../container/VideoList";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import moduleName from "./";
 
 const { SubMenu } = Menu;
 const { Sider, Header, Footer, Content } = Layout;
