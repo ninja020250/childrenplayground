@@ -11,17 +11,19 @@ class App extends React.Component {
     return (
       <div className="App">
         {/* <!-- Preload page --> */}
-        <div className="circle-load" id="init-loading">
-          <div class="lds-ring">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+        <div className="loading-container"  id="init-loading">
+          <div className="circle-load">
+            <div class="lds-ring">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
           </div>
         </div>
         <Switch>
           <Route path="/" exact component={Login} />
-          <Route path="/login"  component={Login} />
+          <Route path="/login" component={Login} />
           <Route path="/home" component={HomePage} />
           <Route component={HomePage} />
         </Switch>
