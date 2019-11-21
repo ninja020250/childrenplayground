@@ -1,10 +1,10 @@
 // var HOST = "https://capstoneweb.azurewebsites.net";
 var HOST = "http://127.0.0.1:8000";
 var PORT = "";
-// if (process.env.REACT_APP_ENV === "production") {
-//   HOST = "https://capstoneweb.azurewebsites.net";
-//   PORT= ''
-// }
+if (process.env.REACT_APP_ENV === "production") {
+  HOST = "https://capstoneweb.azurewebsites.net";
+  PORT= ''
+}
 
 const API = {
   LOGIN: `${HOST}${PORT}/token-auth/`,
