@@ -1,8 +1,8 @@
 // var HOST = "https://capstoneweb.azurewebsites.net";
-var HOST = "http://127.0.0.1:8000";
+var HOST = "http://capstone16.southeastasia.cloudapp.azure.com";
 var PORT = "";
 if (process.env.REACT_APP_ENV === "production") {
-  HOST = "https://capstone16.southeastasia.cloudapp.azure.com";
+  HOST = "http://capstone16.southeastasia.cloudapp.azure.com";
   PORT= ''
 }
 
