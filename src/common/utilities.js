@@ -21,6 +21,7 @@ export function convertUTCDate(date) {
 }
 export function toStringDate(date) {
   var d = new Date(date);
+  
   var day = "" + d.getDate();
   var month = "" + (d.getMonth() + 1);
   var year = d.getFullYear();

@@ -2,3 +2,21 @@
   min-height: 100vh;
 }
 
+.landingpage-container {
+  i {
+    font-size: 50px;
+    margin: 10px 0;
+    color: #1890ff;
+  }
+  .ant-card:hover {
+    transform: translateY(-5px);
+    color: white;
+    transition: all 0.5s;
+    background: #e6f7ff;
+    color: #1967d2;
+    border: 1px solid #1967d2;
+    i {
+      color: #001529;
+    }
+  }
+}

@@ -1,9 +1,10 @@
-var HOST = "https://capstoneweb.azurewebsites.net";
+// var HOST = "https://capstoneweb.azurewebsites.net";
+var HOST = "http://127.0.0.1:8000";
 var PORT = "";
-if (process.env.REACT_APP_ENV === "production") {
-  HOST = "https://capstoneweb.azurewebsites.net";
-  PORT= ''
-}
+// if (process.env.REACT_APP_ENV === "production") {
+//   HOST = "https://capstoneweb.azurewebsites.net";
+//   PORT= ''
+// }
 
 const API = {
   LOGIN: `${HOST}${PORT}/token-auth/`,
@@ -13,7 +14,12 @@ const API = {
   GET_STREAM: `${HOST}${PORT}/api/v1/stream`
 };
 
-
+const LEVEL_WARNING = {
+  LOW:"Quan ngại sâu sắc",
+  MIDDLE: "Nguy hiểm",
+  HIGHT: "Nguy hiểm cao"  
+}
 export {
-    API
+    API,
+    LEVEL_WARNING
 }

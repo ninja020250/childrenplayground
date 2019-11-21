@@ -5,6 +5,7 @@ import React, { Component } from "react";
 import { checkToken, userLogout } from "../store/action/userAction";
 
 import PlayVideo from "../container/PlayVideo";
+import Tutorial from "../container/Tutorial";
 import VideoList from "../container/VideoList";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -105,11 +106,16 @@ class HomePage extends Component {
                       path={`${this.props.match.path}/videos/:id`}
                       component={PlayVideo}
                     />
+                     <Route
+                    exact
+                      key="route-6"
+                      path={`${this.props.match.path}/tutorial`}
+                      component={Tutorial}
+                    />
                   </Switch>
                 </Content>
-            
               </Layout>
-              <Footer>Footer</Footer>
+              <Footer style={{textAlign: "center", borderTop: "1px solid rgba(0, 0, 0, .1)"}}><strong>CPC</strong> ©2019 Developed by <strong><a href="#">team Capstone-16</a></strong>. Built on top of JavaScript, website powered by <strong>Reactjs</strong>, <strong>Redux</strong></Footer>
             </Layout>
           </div>
         )}
